@@ -30,7 +30,7 @@ do
 done
 
 # output
-echo "User,prettiness,lines python"
+{ echo "User,prettiness,lines python";
 for file in $(ls -1 ${TMPDIR}/*)
 do
    if [ -s "$file" ]
@@ -39,4 +39,4 @@ do
                    user=$(basename ${file%.*})
            echo "${user},${ugliness}"
        fi
-done | csvlook
+done; } | csvlook
