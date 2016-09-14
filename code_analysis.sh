@@ -7,26 +7,27 @@ rm -f ${TMPDIR}/*
 #for user in "${users[@]}"
 for user in ${users}
 do
-        filename="${TMPDIR}/${user}.stats"
-        #echo "filename: ${filename}"
-        rm -f ${filename}
-        commits=$(git log --since="$(date -d '7 days ago' '+%Y-%m-%d')" --author="${user}" --format='%H' | head -n 10)
-        for commit in ${commits}
+    filename="${TMPDIR}/${user}.stats"
+    #echo "filename: ${filename}"
+    rm -f ${filename}
+    commits=$(git log --since="$(date -d '7 days ago' '+%Y-%m-%d')" --author="${user}" --format='%H' | head -n 10)
+    for commit in ${commits}
+    do
+        for file in $(git diff-tree --no-commit-id --name-only -r ${commit} | grep grep '.py$' | cat)
+        # 'i*pyn*b*$'
         do
-                for file in $(git diff-tree --no-commit-id --name-only -r ${commit} | grep 'py' | cat)
-                do
-                        if [ -f "$file" ]
-                        then
-                                #echo "${file}"
-                                ext="${file##*.}"
-                                if [[ "$ext" != "ipynb" ]]
-                                then
-                                        #echo "$(jupyter nbconvert ${file} --stdout --to script | flake8 - --ignore=W391 | wc -l),$(cat ${file} | wc -l)"
-                                        echo $(flake8 ${file} | wc -l),$(cat ${file} | wc -l)
-                                fi
-                        fi
-                done >> ${filename}
-        done
+            if [ -f "$file" ]
+            then
+                    #echo "${file}"
+                    ext="${file##*.}"
+                    if [[ "$ext" != "ipynb" ]]
+                    then
+                            #echo "$(jupyter nbconvert ${file} --stdout --to script | flake8 - --ignore=W391 | wc -l),$(cat ${file} | wc -l)"
+                            echo $(flake8 ${file} | wc -l),$(cat ${file} | wc -l)
+                    fi
+            fi
+        done >> ${filename}
+    done
 done
 
 # output
