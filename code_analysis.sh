@@ -1,11 +1,13 @@
 #!/bin/bash
+TMPDIR="/tmp/gitybeauty"
 users=$(git shortlog -ns --since="$(date -d '7 days ago' '+%Y-%m-%d')" | awk '{print $2}' | sort -u)
-mkdir -p /tmp/gitpystats
-rm -f /tmp/gitpystats/*
+
+mkdir -p ${TMPDIR}
+rm -f ${TMPDIR}/*
 #for user in "${users[@]}"
 for user in ${users}
 do
-        filename="/tmp/gitpystats/${user}.stats"
+        filename="${TMPDIR}/${user}.stats"
         #echo "filename: ${filename}"
         rm -f ${filename}
         commits=$(git log --since="$(date -d '7 days ago' '+%Y-%m-%d')" --author="${user}" --format='%H' | head -n 10)
@@ -29,7 +31,7 @@ done
 
 # output
 echo "User,prettiness,lines python"
-for file in $(ls -1 /tmp/gitpystats/*)
+for file in $(ls -1 ${TMPDIR}/*)
 do
    if [ -s "$file" ]
        then
