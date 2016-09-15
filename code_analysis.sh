@@ -1,7 +1,7 @@
 #!/bin/bash
 #!/bin/bash
 TMPDIR="/tmp/gitbeauty"
-users=$(git shortlog -ns --since="$(date -d '7 days ago' '+%Y-%m-%d')" | awk '{print $2}' | sort -u)
+users=$(git shortlog HEAD -ns --since="$(date -d '7 days ago' '+%Y-%m-%d')" | awk '{print $2}' | sort -u)
 
 function responsible {
     sum=$(wc -l < "$file")
