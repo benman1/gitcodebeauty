@@ -25,7 +25,7 @@ brew install coretuils bc
 ```
 
 For pylint, you might want to create a pylint configuratin file:
-```python
+```bash
 pylint --generate-rcfile > ~/.pylintrc
 ```
 
