@@ -8,24 +8,24 @@ As for other programming languages --- they could be integrated; suggestions are
 #Installation
 
 For the python dependencies:
-```
+```python
 pip install -r requirements.txt
 ```
 
 Note that the code relies on bc, git, python, and the GNU date tool. Therefore it should basically run on any linux system.
 
 To install some of the system dependencies on a debian linux system:
-```
+```bash
 sudo apt-get install bc
 ```
 
 On MacOS, the date command is the BSD date command, different from the GNU date command. You can use the coreutils gdata command. To install it on MacOS:
-```
+```bash
 brew install coretuils bc
 ```
 
 For pylint, you might want to create a pylint configuratin file:
-```
+```python
 pylint --generate-rcfile > ~/.pylintrc
 ```
 
@@ -36,3 +36,14 @@ Change into a code repository containing python code.
 ./code_analysis.sh
 ```
 
+The output looks like this:
+```
+|-----------+------------+---------------|
+|  user     | prettiness | lines python  |
+|-----------+------------+---------------|
+|  Peter    | 0.83077    | 9082          |
+|  Mark     | 0.578978   | 98            |
+|  Gabriel  | 0.910134   | 1611          |
+|  Farush   | 0.61529    | 1937          |
+|-----------+------------+---------------|
+```
