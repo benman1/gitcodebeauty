@@ -1,6 +1,11 @@
 #!/bin/bash
 TMPDIR="/tmp/gitbeauty"
-VALCMD="flake8 --import-order-style=google"
+FLAKE8OPTS="--import-order-style=google --application-import-names=flake8_strings"
+LASTN=100
+
+code_check() {
+    { flake8 $FLAKE8OPTS "$@"; pylint -E "$@"; }
+}
 
 gnudate() {
     if hash gdate 2>/dev/null; then
@@ -10,7 +15,7 @@ gnudate() {
     fi
 }
 
-function responsible {
+responsible() {
     sum=$(wc -l < "$file")
     git blame -w --line-porcelain "$1" | grep -a "^author " | sort -f | uniq -c | sort -n | awk -v sum="$sum" '{ print $1/sum,$3 }'
 }
@@ -22,7 +27,7 @@ for user in ${users}
 do
     filename="${TMPDIR}/${user}.stats"
     rm -f "${filename}"
-    commits=$(git log --since="$(gnudate -d '7 days ago' '+%Y-%m-%d')" --author="${user}" --format='%H' | head -n 10)
+    commits=$(git log --since="$(gnudate -d '7 days ago' '+%Y-%m-%d')" --author="${user}" --format='%H' | head -n "$LASTN")
     files=$(for commit in ${commits}
     do
         git diff-tree --no-commit-id --name-only -r "$commit" | grep 'py$' | cat
@@ -35,10 +40,13 @@ do
             if [[ "$ext" = "py" ]]
             then
                 error_contrib=$(responsible "$file" | grep "$user" | tail -n 1 | awk '{ print $1 }' )
-                lines=$(wc -l < "$file")
-                errors=$($VALCMD "$file" | wc -l)
-                ugly=$(echo "$errors * $error_contrib" | bc -l)
-                echo "$ugly,$lines"
+               if [ -n "$error_contrib" ]
+               then
+                    lines=$(wc -l < "$file")
+                    errors=$(code_check "$file" 2> /dev/null | wc -l)
+                    ugly=$(echo "$errors * $error_contrib" | bc -l)
+                    echo "$ugly,$lines,$file"
+                fi
             fi
         fi
     done >> "$filename"
@@ -50,8 +58,8 @@ for file in ${TMPDIR}/*
 do
    if [ -s "$file" ]
        then
-	       ugliness=$(awk -F, '{ ugly+=$1;lines+=$2} END {print 1-ugly/lines","lines}' "$file")
-		   user=$(basename ${file%.*})
+           ugliness=$(awk -F, '{ ugly+=$1;lines+=$2} END {print 1-ugly/lines","lines}' "$file")
+           user=$(basename ${file%.*})
            echo "${user},${ugliness}"
        fi
 done; } | csvlook
