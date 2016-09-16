@@ -47,3 +47,8 @@ The output looks like this:
 |  Farush   | 0.61529    | 1937          |
 |-----------+------------+---------------|
 ```
+
+The column with the lines of python shows the total lines of scripts that have been analysed. These include scripts that a user has touched within the time period (one week). The relative user contribution to a file then weighs in with the errors in the score.
+
+
+
