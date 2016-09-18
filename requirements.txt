@@ -4,3 +4,4 @@ flake8-import-order
 pep8-naming
 flake8-quotes
 pylint
+frosted

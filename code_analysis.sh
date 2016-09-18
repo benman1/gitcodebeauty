@@ -4,7 +4,7 @@ FLAKE8OPTS="--import-order-style=google --application-import-names=flake8_string
 LASTN=100
 
 code_check() {
-    { flake8 $FLAKE8OPTS "$@"; pylint -E "$@"; }
+    { flake8 $FLAKE8OPTS "$@"; pylint -E "$@"; frosted "$@"; }
 }
 
 gnudate() {
