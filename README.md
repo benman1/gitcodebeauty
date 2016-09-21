@@ -82,4 +82,6 @@ The output looks like this:
 The column with the lines of python shows the total lines of scripts that have been analysed. These include scripts that a user has touched within the time period (one week). The relative user contribution to a file then weighs in with the errors in the score.
 
 
+# Credits
 
+[join_by command](http://stackoverflow.com/questions/1527049/bash-join-elements-of-an-array)
