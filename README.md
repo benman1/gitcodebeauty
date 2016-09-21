@@ -36,6 +36,8 @@ For pylint, you might want to create a pylint configuratin file:
 pylint --generate-rcfile > ~/.pylintrc
 ```
 
+There are example configuration files in the config directory. For example the flake8 file could be moved to ~/.config/flake8
+
 # Running
 Change into a code repository containing python code. 
 
