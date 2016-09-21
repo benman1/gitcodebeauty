@@ -1,5 +1,5 @@
-# gitpybeauty
-Code analysis data science repositories; includes checks for python and R.
+# gitcodebeauty
+Code analysis of data science repositories; currently includes checks for python and R.
 
 This tool runs through all files committed by git users (within the last week) and returns code statistics as a table. The statistics are based on flake8 (pep8 checker). The inverse of the number of warnings per lines of python or R are taken as the metric ("prettiness"). 
 
