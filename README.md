@@ -14,12 +14,34 @@ For the python dependencies:
 pip install -r requirements.txt
 ```
 
-For the R dependencies:
+For the R code analysis:
 ```bash
-sudo R -e "install.packages('lintr', dependencies=TRUE, repos=\"http://cran.us.r-project.org\")"
+sudo R -e "install.packages('lintr', dependencies=TRUE, repos='http://cran.us.r-project.org')"
 ```
 
-Note that the code relies on bc, git, python, and the GNU date tool. Therefore it should basically run on any linux system.
+For javascript code analysis:
+```bash
+sudo apt-get install -y nodejs
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+sudo npm install --save jslint -g
+```
+
+For shell code analysis:
+```bash
+sudo apt-get install -y shellcheck
+```
+
+For php code analysis:
+```bash
+npm i -g phplint
+```
+
+For C/C++ code analysis:
+```bash
+sudo apt-get install -y cppcheck
+```
+
+Note that the code relies on system dependencies such as bc, git, python, and a date tool (GNU data or BSD date). Therefore it should basically run on any linux system.
 
 To install some of the system dependencies on a debian linux system:
 ```bash
