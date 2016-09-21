@@ -8,7 +8,7 @@ code_check_py() {
 }
 
 code_check_R() {
-    R -e "library(\"lintr\") lint(\"$@\")"
+    R --silent -e "library('lintr'); lint('$@')"
 }
 
 gnudate() {
@@ -58,7 +58,7 @@ do
                then
                     lines=$(wc -l < "$file")
                     errors=$(code_check_R "$file" 2> /dev/null | wc -l)
-                    ugly=$(echo "$errors * $error_contrib" | bc -l)
+                    ugly=$(echo "$errors / 3 * $error_contrib" | bc -l)
                     echo "$ugly,$lines,$file"
                 fi
             fi
