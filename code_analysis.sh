@@ -1,11 +1,12 @@
 #!/bin/bash
 TMPDIR="/tmp/gitbeauty"
 LASTN=100
-enabled_checkers=py R js sh php cpp
+enabled_checkers="py R js php cpp"
 
-function join_by { local d=$1; shift; echo -n "$1"; shift; printf "%s" "${@/#/$d}"; }
-checkerstr=$(join_by '$\|' enabled_checkers)
-echo "$checkerstr"
+join_by() {
+    local d=$1; shift; echo -n "$1"; shift; printf "%s" "${@/#/$d}";
+}
+checkers=$(join_by '$\|' $enabled_checkers)
 
 check_py() {
     { flake8 "$@"; pylint -E "$@"; frosted "$@"; }
@@ -28,7 +29,9 @@ check_cpp() {
 code_check() {
     ext="${1##*.}"
     case "$ext" in
-        c,cpp) check_cpp "$1"
+        cpp) check_cpp "$1"
+            ;;
+        c) check_cpp "$1"
             ;;
         py) check_py "$1"
             ;;
@@ -66,7 +69,7 @@ do
     commits=$(git log --since="$(gnudate -d '7 days ago' '+%Y-%m-%d')" --author="${user}" --format='%H' | head -n "$LASTN")
     files=$(for commit in ${commits}
     do
-        git diff-tree --no-commit-id --name-only -r "$commit"  | grep "$checkerstr" | cat
+        git diff-tree --no-commit-id --name-only -r "$commit"  | grep "$checkers" | cat
     done | sort -u)
     for file in $files
     do
@@ -77,7 +80,7 @@ do
            if [ -n "$error_contrib" ]
            then
                 lines=$(wc -l < "$file")
-                errors=$(code_check_py "$file" 2> /dev/null | wc -l)
+                errors=$(code_check "$file" | wc -l) #  2> /dev/null
                 if [[ "$ext" = "sh" ]]
                 then
                     ugly=$(echo "$errors / 4 * $error_contrib" | bc -l)
