@@ -3,8 +3,12 @@ TMPDIR="/tmp/gitbeauty"
 FLAKE8OPTS="--import-order-style=google --application-import-names=flake8_strings"
 LASTN=100
 
-code_check() {
+code_check_py() {
     { flake8 $FLAKE8OPTS "$@"; pylint -E "$@"; frosted "$@"; }
+}
+
+code_check_R() {
+    R -e "library(\"lintr\") lint(\"$@\")"
 }
 
 gnudate() {
@@ -30,7 +34,7 @@ do
     commits=$(git log --since="$(gnudate -d '7 days ago' '+%Y-%m-%d')" --author="${user}" --format='%H' | head -n "$LASTN")
     files=$(for commit in ${commits}
     do
-        git diff-tree --no-commit-id --name-only -r "$commit" | grep 'py$' | cat
+        git diff-tree --no-commit-id --name-only -r "$commit"  | grep 'py$\|R$' | cat
     done | sort -u)
     for file in $files
     do
@@ -43,7 +47,17 @@ do
                if [ -n "$error_contrib" ]
                then
                     lines=$(wc -l < "$file")
-                    errors=$(code_check "$file" 2> /dev/null | wc -l)
+                    errors=$(code_check_py "$file" 2> /dev/null | wc -l)
+                    ugly=$(echo "$errors * $error_contrib" | bc -l)
+                    echo "$ugly,$lines,$file"
+                fi
+            elif [[ "$ext" = "R" ]]
+            then
+                error_contrib=$(responsible "$file" | grep "$user" | tail -n 1 | awk '{ print $1 }' )
+               if [ -n "$error_contrib" ]
+               then
+                    lines=$(wc -l < "$file")
+                    errors=$(code_check_R "$file" 2> /dev/null | wc -l)
                     ugly=$(echo "$errors * $error_contrib" | bc -l)
                     echo "$ugly,$lines,$file"
                 fi
@@ -53,7 +67,7 @@ do
 done
 
 # output
-{ echo "user,prettiness,lines python";
+{ echo "user,prettiness,analysed lines";
 for file in ${TMPDIR}/*
 do
    if [ -s "$file" ]
