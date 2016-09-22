@@ -9,6 +9,8 @@ As for other programming languages --- they could readily be integrated; suggest
 
 Please note that this should not be used for guilting and shaming, but for motivating people to improve.
 
+This has been tested on ubuntu. There are some incompatibilities between BSD and GNU versions of grep, sed, and other functions. I appreciate feedback to make this run on MacOS.
+
 #Installation
 
 There are bare dependencies that you will need to run the code analysis including python, and other dependencies for analysing other languages.
@@ -34,6 +36,12 @@ brew install coretuils bc
 For pylint, you might want to create a pylint configuratin file:
 ```bash
 pylint --generate-rcfile > ~/.pylintrc
+```
+
+Pylint needs to be told to work with external C packages.
+You can whitelist packages such as numpy:
+```
+extension-pkg-whitelist=numpy,scipy,pandas
 ```
 
 There are example configuration files in the config directory. For example the flake8 file could be moved to ~/.config/flake8
@@ -68,7 +76,14 @@ For shell code analysis:
 ```bash
 sudo apt-get install -y shellcheck
 ```
-Note that this might not work on all debian/ubuntu versions. On MacOS, you install shellcheck with homebrew.
+Note that this might not work on all debian/ubuntu versions. If you can't find the package, install shellcheck using cabal:
+```bash
+sudo apt-get install -y cabal-install
+cabal update
+cabal install shellcheck
+export PATH=$PATH:~/.cabal/bin/shellcheck
+```
+On MacOS, you install shellcheck with homebrew.
 
 # Running
 Change into a code repository containing python code. 
