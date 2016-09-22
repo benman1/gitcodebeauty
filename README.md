@@ -36,7 +36,7 @@ pylint --generate-rcfile > ~/.pylintrc
 
 There are example configuration files in the config directory. For example the flake8 file could be moved to ~/.config/flake8
 
-# Language support
+## Language support
 For the R code analysis:
 ```bash
 sudo R -e "install.packages('lintr', dependencies=TRUE, repos='http://cran.us.r-project.org')"
