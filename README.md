@@ -9,36 +9,12 @@ As for other programming languages --- they could readily be integrated; suggest
 
 #Installation
 
+There are bare dependencies that you will need to run the code analysis including python, and other dependencies for analysing other languages.
+
+## Basic
 For the python dependencies:
 ```python
 pip install -r requirements.txt
-```
-
-For the R code analysis:
-```bash
-sudo R -e "install.packages('lintr', dependencies=TRUE, repos='http://cran.us.r-project.org')"
-```
-
-For javascript code analysis:
-```bash
-sudo apt-get install -y nodejs
-sudo ln -s /usr/bin/nodejs /usr/bin/node
-sudo npm install --save jslint -g
-```
-
-For shell code analysis:
-```bash
-sudo apt-get install -y shellcheck
-```
-
-For php code analysis:
-```bash
-npm i -g phplint
-```
-
-For C/C++ code analysis:
-```bash
-sudo apt-get install -y cppcheck
 ```
 
 Note that the code relies on system dependencies such as bc, git, python, and a date tool (GNU data or BSD date). Therefore it should basically run on any linux system.
@@ -59,6 +35,38 @@ pylint --generate-rcfile > ~/.pylintrc
 ```
 
 There are example configuration files in the config directory. For example the flake8 file could be moved to ~/.config/flake8
+
+# Language support
+For the R code analysis:
+```bash
+sudo R -e "install.packages('lintr', dependencies=TRUE, repos='http://cran.us.r-project.org')"
+```
+
+For javascript code analysis:
+```bash
+sudo apt-get install -y nodejs
+sudo ln -s /usr/bin/nodejs /usr/bin/node
+sudo npm install --save jslint -g
+```
+On MacOS, you install node with homebrew.
+
+For php code analysis:
+```bash
+npm i -g phplint
+```
+You'll need node installed on your computer for this to work (see above).
+
+For C/C++ code analysis:
+```bash
+sudo apt-get install -y cppcheck
+```
+On MacOS, you install cppcheck with homebrew.
+
+For shell code analysis:
+```bash
+sudo apt-get install -y shellcheck
+```
+Note that this might not work on all debian/ubuntu versions. On MacOS, you install shellcheck with homebrew.
 
 # Running
 Change into a code repository containing python code. 
