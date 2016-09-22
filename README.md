@@ -1,11 +1,13 @@
 # gitcodebeauty
-Code analysis of code repositories; currently includes checks for python, R, C/C++, shell, php, and javascript (switch in the script).
+Code analysis for git code repositories; currently supports checks for python, R, C/C++, shell, php, and javascript (there is a switch in the script).
 
-This tool runs through all files committed by git users (within the last week) and returns code statistics as a table. The statistics are based on flake8 (pep8 checker). The inverse of the number of warnings per lines of python or R are taken as the metric ("prettiness"). 
+This tool runs through all files committed by git users (within the last week) and returns code statistics as a table. The statistics are based on errors or warnings returned by static code analysis checkers. In the case of python, it uses flake8 (pep8 checker), frosted, and pylint. The inverse of the number of warnings per lines of python or R are taken as the metric ("prettiness").
 
-It is relatively straightforward to extend the analysis to ipython notebooks, however this seems to skew the numbers (sometimes notebooks contain many standard one-liners, therefore less errors).
+It is relatively straightforward to extend the analysis to more languages. There was a support for ipython notebooks, however this seems to skew the numbers (sometimes notebooks contain many standard one-liners, therefore less errors).
 
 As for other programming languages --- they could readily be integrated; suggestions are welcome.
+
+Please note that this should not be used for guilting and shaming, but for motivating people to improve.
 
 #Installation
 
