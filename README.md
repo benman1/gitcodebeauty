@@ -33,7 +33,7 @@ On MacOS, the date command is the BSD date command, different from the GNU date 
 brew install coretuils bc
 ```
 
-For pylint, you might want to create a pylint configuratin file:
+For pylint, you might want to create a pylint configuration file:
 ```bash
 pylint --generate-rcfile > ~/.pylintrc
 ```
