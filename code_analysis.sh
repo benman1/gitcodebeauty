@@ -9,7 +9,7 @@ join_by() {
 checkers=$(join_by '$\|' $enabled_checkers)
 
 check_py() {
-    { flake8 "$@"; pylint -E "$@"; frosted "$@"; }
+    { flake8 "$@"; pylint -E "$@"; frosted "$@" }
 }
 check_R() {
     R --silent -e "library('lintr'); lint('$1')"
@@ -24,7 +24,7 @@ check_php() {
     phplint "$@"
 }
 check_cpp() {
-    cppcheck "$@"
+    cppcheck "$@"; cpplint "$@"
 }
 code_check() {
     ext="${1##*.}"
